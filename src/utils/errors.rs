@@ -1,6 +1,8 @@
 // src/error.rs
-use std::fmt::{self, Display, Formatter};
 use std::error::Error;
+use std::fmt::{self, Display, Formatter};
+
+use clap::builder::Str;
 
 #[derive(Debug)]
 pub enum FlowError {
@@ -8,6 +10,10 @@ pub enum FlowError {
     Network(String),
     Ssid(String),
     Io(std::io::Error),
+    EncryptionError(String),
+    FileError(String),
+    PermissionError(String),
+    ParsingError(String),
 }
 
 impl Display for FlowError {
@@ -17,6 +23,10 @@ impl Display for FlowError {
             FlowError::Network(msg) => write!(f, "Network error: {}", msg),
             FlowError::Ssid(msg) => write!(f, "Ssid error: {}", msg),
             FlowError::Io(err) => write!(f, "I/O error: {}", err),
+            FlowError::EncryptionError(msg) => write!(f, "Encryption error: {}", msg),
+            FlowError::FileError(msg) => write!(f, "File related error: {}", msg),
+            FlowError::PermissionError(msg) => write!(f, "Permission error: {}", msg),
+            FlowError::ParsingError(msg) => write!(f, "Parsing error: {}", msg),
         }
     }
 }

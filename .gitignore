@@ -1,1 +1,7 @@
 /target
+.env
+
+/tests
+/tests
+
+.rust-analyzer/

@@ -1,5 +1,6 @@
 pub mod services;
 pub mod utils;
 
-use services::{ssid, user, workspace};
+use services::{user, workspace};
 pub use user::User;
+pub use workspace::Workspace;

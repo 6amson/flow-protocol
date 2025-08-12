@@ -1,12 +1,27 @@
-use flow::User;
-use std::path::Path;
+use clap::Parser;
+use flow::{utils::errors::FlowError, Workspace};
+use std::path::PathBuf;
 
-fn main() -> std::io::Result<()> {
-    let base_dir = dirs::home_dir().unwrap().join("Flow");
-    let user = User::new("alice", &base_dir).expect("User not created, error encountered.");
+/// Simple Flow user creator
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Cli {
+    username: String,
+    dir: Option<PathBuf>,
+}
 
-    println!("User created: {:?}", user);
-    println!("Workspace path: {}", user.workspace_path.display());
+fn main() -> Result<(), FlowError> {
+    let cli = Cli::parse();
+
+    let base_dir = cli.dir.unwrap_or_else(|| {
+        dirs::home_dir()
+            .expect("Could not determine home directory")
+            .join("Flow")
+    });
+
+    let workspace = Workspace::new(&cli.username, base_dir);
+
+    println!("Workspace path: {}", workspace.path.display());
 
     Ok(())
 }
